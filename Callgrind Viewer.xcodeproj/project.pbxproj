@@ -1,0 +1,304 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		26ACF3A5140684FB008653A5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26ACF3A4140684FB008653A5 /* Cocoa.framework */; };
+		26ACF3AF140684FB008653A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3AD140684FB008653A5 /* InfoPlist.strings */; };
+		26ACF3B1140684FB008653A5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ACF3B0140684FB008653A5 /* main.m */; };
+		26ACF3B5140684FB008653A5 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3B3140684FB008653A5 /* Credits.rtf */; };
+		26ACF3B8140684FB008653A5 /* CallgrindOutputDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ACF3B7140684FB008653A5 /* CallgrindOutputDocument.m */; };
+		26ACF3BB140684FB008653A5 /* CallgrindOutputDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3B9140684FB008653A5 /* CallgrindOutputDocument.xib */; };
+		26ACF3BE140684FB008653A5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3BC140684FB008653A5 /* MainMenu.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		26ACF3A0140684FB008653A5 /* Callgrind Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Callgrind Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		26ACF3A4140684FB008653A5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		26ACF3A7140684FB008653A5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		26ACF3A8140684FB008653A5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		26ACF3A9140684FB008653A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		26ACF3AC140684FB008653A5 /* Callgrind Viewer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Callgrind Viewer-Info.plist"; sourceTree = "<group>"; };
+		26ACF3AE140684FB008653A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		26ACF3B0140684FB008653A5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		26ACF3B2140684FB008653A5 /* Callgrind Viewer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Callgrind Viewer-Prefix.pch"; sourceTree = "<group>"; };
+		26ACF3B4140684FB008653A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		26ACF3B6140684FB008653A5 /* CallgrindOutputDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CallgrindOutputDocument.h; sourceTree = "<group>"; };
+		26ACF3B7140684FB008653A5 /* CallgrindOutputDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CallgrindOutputDocument.m; sourceTree = "<group>"; };
+		26ACF3BA140684FB008653A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CallgrindOutputDocument.xib; sourceTree = "<group>"; };
+		26ACF3BD140684FB008653A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26ACF39D140684FA008653A5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26ACF3A5140684FB008653A5 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26ACF395140684FA008653A5 = {
+			isa = PBXGroup;
+			children = (
+				26ACF3AA140684FB008653A5 /* Callgrind Viewer */,
+				26ACF3A3140684FB008653A5 /* Frameworks */,
+				26ACF3A1140684FB008653A5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		26ACF3A1140684FB008653A5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26ACF3A0140684FB008653A5 /* Callgrind Viewer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26ACF3A3140684FB008653A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				26ACF3A4140684FB008653A5 /* Cocoa.framework */,
+				26ACF3A6140684FB008653A5 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		26ACF3A6140684FB008653A5 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				26ACF3A7140684FB008653A5 /* AppKit.framework */,
+				26ACF3A8140684FB008653A5 /* CoreData.framework */,
+				26ACF3A9140684FB008653A5 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		26ACF3AA140684FB008653A5 /* Callgrind Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				26ACF3B6140684FB008653A5 /* CallgrindOutputDocument.h */,
+				26ACF3B7140684FB008653A5 /* CallgrindOutputDocument.m */,
+				26ACF3B9140684FB008653A5 /* CallgrindOutputDocument.xib */,
+				26ACF3BC140684FB008653A5 /* MainMenu.xib */,
+				26ACF3AB140684FB008653A5 /* Supporting Files */,
+			);
+			path = "Callgrind Viewer";
+			sourceTree = "<group>";
+		};
+		26ACF3AB140684FB008653A5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				26ACF3AC140684FB008653A5 /* Callgrind Viewer-Info.plist */,
+				26ACF3AD140684FB008653A5 /* InfoPlist.strings */,
+				26ACF3B0140684FB008653A5 /* main.m */,
+				26ACF3B2140684FB008653A5 /* Callgrind Viewer-Prefix.pch */,
+				26ACF3B3140684FB008653A5 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26ACF39F140684FA008653A5 /* Callgrind Viewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26ACF3C1140684FB008653A5 /* Build configuration list for PBXNativeTarget "Callgrind Viewer" */;
+			buildPhases = (
+				26ACF39C140684FA008653A5 /* Sources */,
+				26ACF39D140684FA008653A5 /* Frameworks */,
+				26ACF39E140684FA008653A5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Callgrind Viewer";
+			productName = "Callgrind Viewer";
+			productReference = 26ACF3A0140684FB008653A5 /* Callgrind Viewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26ACF397140684FA008653A5 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 26ACF39A140684FA008653A5 /* Build configuration list for PBXProject "Callgrind Viewer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 26ACF395140684FA008653A5;
+			productRefGroup = 26ACF3A1140684FB008653A5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				26ACF39F140684FA008653A5 /* Callgrind Viewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26ACF39E140684FA008653A5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26ACF3AF140684FB008653A5 /* InfoPlist.strings in Resources */,
+				26ACF3B5140684FB008653A5 /* Credits.rtf in Resources */,
+				26ACF3BB140684FB008653A5 /* CallgrindOutputDocument.xib in Resources */,
+				26ACF3BE140684FB008653A5 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26ACF39C140684FA008653A5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26ACF3B1140684FB008653A5 /* main.m in Sources */,
+				26ACF3B8140684FB008653A5 /* CallgrindOutputDocument.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		26ACF3AD140684FB008653A5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26ACF3AE140684FB008653A5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		26ACF3B3140684FB008653A5 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26ACF3B4140684FB008653A5 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		26ACF3B9140684FB008653A5 /* CallgrindOutputDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26ACF3BA140684FB008653A5 /* en */,
+			);
+			name = CallgrindOutputDocument.xib;
+			sourceTree = "<group>";
+		};
+		26ACF3BC140684FB008653A5 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26ACF3BD140684FB008653A5 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		26ACF3BF140684FB008653A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		26ACF3C0140684FB008653A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		26ACF3C2140684FB008653A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Callgrind Viewer/Callgrind Viewer-Prefix.pch";
+				INFOPLIST_FILE = "Callgrind Viewer/Callgrind Viewer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		26ACF3C3140684FB008653A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Callgrind Viewer/Callgrind Viewer-Prefix.pch";
+				INFOPLIST_FILE = "Callgrind Viewer/Callgrind Viewer-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26ACF39A140684FA008653A5 /* Build configuration list for PBXProject "Callgrind Viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26ACF3BF140684FB008653A5 /* Debug */,
+				26ACF3C0140684FB008653A5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26ACF3C1140684FB008653A5 /* Build configuration list for PBXNativeTarget "Callgrind Viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26ACF3C2140684FB008653A5 /* Debug */,
+				26ACF3C3140684FB008653A5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26ACF397140684FA008653A5 /* Project object */;
+}
