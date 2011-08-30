@@ -15,33 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "CallgrindOutputDocument.h"
-
 #import "CallgrindOutputWindowController.h"
 
-@implementation CallgrindOutputDocument
+@implementation CallgrindOutputWindowController
 
 - (id)init
 {
-    self = [super init];
+    self = [super initWithWindowNibName:@"CallgrindOutputWindow"];
     if (self) {
-        // Add your subclass-specific initialization here.
-        // If an error occurs here, send a [self release] message and return nil.
+        // Add initialization here.
     }
     return self;
-}
-
-- (void)makeWindowControllers
-{
-    CallgrindOutputWindowController *windowController = [[[CallgrindOutputWindowController alloc] init] autorelease];
-    [self addWindowController:windowController];
-}
-
-- (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
-{
-    // FIXME: What about actually reading the file? You bag of meat.
-    NSLog(@"Open document from URL %@", [absoluteURL absoluteString]);
-    return YES;
 }
 
 @end
