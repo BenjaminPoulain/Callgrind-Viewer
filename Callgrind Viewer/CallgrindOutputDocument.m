@@ -18,6 +18,7 @@
 #import "CallgrindOutputDocument.h"
 
 #import "CallgrindOutputWindowController.h"
+#import "FileLoader.h"
 
 @implementation CallgrindOutputDocument
 
@@ -31,6 +32,13 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [_fileLoader cancel];
+    [_fileLoader release];
+    [super dealloc];
+}
+
 - (void)makeWindowControllers
 {
     CallgrindOutputWindowController *windowController = [[[CallgrindOutputWindowController alloc] init] autorelease];
@@ -39,8 +47,8 @@
 
 - (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
-    // FIXME: What about actually reading the file? You bag of meat.
-    NSLog(@"Open document from URL %@", [absoluteURL absoluteString]);
+    assert(!_fileLoader);
+    _fileLoader = [[FileLoader alloc] initWithURL:absoluteURL];
     return YES;
 }
 

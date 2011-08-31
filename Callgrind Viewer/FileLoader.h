@@ -15,13 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-@class FileLoader;
+@class NSMutableData;
 
-@interface CallgrindOutputDocument : NSDocument {
+@interface FileLoader : NSObject {
 @private
-    FileLoader *_fileLoader;
+    __block dispatch_io_t _ioChannel;
+
+    NSMutableData *_pendingDataBuffer;
 }
+
+- (id)initWithURL:(NSURL *)absoluteURL;
+- (void)cancel;
 
 @end
