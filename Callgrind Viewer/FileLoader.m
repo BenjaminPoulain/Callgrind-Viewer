@@ -34,10 +34,67 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     return -1;
 }
 
-- (BOOL)processLine:(const char*)data size: (size_t) size
+- (BOOL)processBodyLine:(NSString *)string
 {
-    // FIXME: on invalid file format: return NO;
-    // FIXME: parse the line.
+    return YES;
+}
+
+- (BOOL)processHeaderLine:(NSString *)string
+{
+    return YES;
+}
+
+- (BOOL)processCreatorLine:(NSString *)string
+{
+    NSError *error = 0;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^creator:.*$"
+                                                                           options:0
+                                                                             error:&error];
+    assert(!error);
+    NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
+
+    assert(matches == 0 || matches == 1);
+    _readingStage = Header;
+    if (matches)
+        return YES;
+    else {
+        // The creator line is optional, process next stage.
+        return [self processHeaderLine:string];
+    }
+}
+
+- (BOOL)processFormatVersionLine:(NSString *)string
+{
+    NSError *error = 0;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^version:[ \t]*(0x[a-fA-F0-9]+|\\d+)$"
+                                                                           options:0
+                                                                             error:&error];
+    assert(!error);
+    NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
+
+    assert(matches == 0 || matches == 1);
+    _readingStage = Creator;
+    if (matches)
+        return YES;
+    else {
+        // The version line is optional, process next stage.
+        return [self processCreatorLine:string];
+    }
+}
+
+- (BOOL)processLine:(const char *)data size: (size_t) size
+{
+    NSString *string = [[[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO] autorelease];
+    switch (_readingStage) {
+        case FormatVersion:
+            return [self processFormatVersionLine:string];
+        case Creator:
+            return [self processCreatorLine:string];
+        case Header:
+            return [self processHeaderLine:string];
+        case Body:
+            return [self processBodyLine:string];
+    }
     return YES;
 }
 
@@ -90,6 +147,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     self = [super init];
     if (self) {
         _pendingDataBuffer = [[NSMutableData alloc] initWithCapacity:0];
+        _readingStage = FormatVersion;
 
         assert([absoluteURL isFileURL]);
         NSString* filePath = [absoluteURL path];

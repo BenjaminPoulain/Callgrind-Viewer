@@ -24,6 +24,12 @@
     __block dispatch_io_t _ioChannel;
 
     NSMutableData *_pendingDataBuffer;
+    enum {
+        FormatVersion,
+        Creator,
+        Header,
+        Body,
+    } _readingStage;
 }
 
 - (id)initWithURL:(NSURL *)absoluteURL;
