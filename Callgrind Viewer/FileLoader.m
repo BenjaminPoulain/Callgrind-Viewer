@@ -41,6 +41,27 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 
 - (BOOL)processHeaderLine:(NSString *)string
 {
+    if (![string length])
+        return YES;
+    if ([string hasPrefix:@"#"])
+        return YES;
+
+    { // Command parsing.
+        NSError *error = 0;
+        NSRegularExpression *commandRegex = [NSRegularExpression regularExpressionWithPattern:@"^cmd:[ \t]*(.*)$"
+                                                                                      options:0
+                                                                                        error:&error];
+        NSTextCheckingResult *match = [commandRegex firstMatchInString: string options: 0 range:NSMakeRange(0, [string length])];
+        if (match) {
+            NSRange commandRange = [match rangeAtIndex: 1];
+            NSString *commandName = [string substringWithRange: commandRange];
+            // FIXME: store the command in a nice object representing the profile.
+            NSLog(@"command = %@", commandName);
+            return YES;
+        }
+    }
+
+    // FIXME: parse the remaining headers.
     return YES;
 }
 
