@@ -174,55 +174,58 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 
         assert([absoluteURL isFileURL]);
         NSString* filePath = [absoluteURL path];
+
+        void (^cleanup_handler)(int error) = ^(int error) {
+            BOOL isProfileValid = [_profile isValid];
+            if (!error && isProfileValid)
+                successCallback(_profile);
+            else {
+                NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                          @"The profile cannot be loaded from the file.", NSLocalizedDescriptionKey,
+                                          filePath, NSFilePathErrorKey,
+                                          absoluteURL, NSURLErrorKey,
+                                          nil];
+                NSError *nsError = [NSError errorWithDomain:@"InvalidFile"
+                                                       code:1
+                                                   userInfo:userInfo];
+                errorCallback(nsError);
+            }
+            [_profile release];
+            _profile = nil;
+
+            dispatch_release(_ioChannel);
+            _ioChannel = 0;
+        };
         _ioChannel = dispatch_io_create_with_path(/* type */ DISPATCH_IO_STREAM,
                                                   /* path */ [filePath fileSystemRepresentation],
                                                   /* oflag */ O_RDONLY,
                                                   /* mode */ 0,
                                                   /* queue */ dispatch_get_main_queue(),
-                                                  /* completion callback */ ^(int error) {
-                                                      BOOL isProfileValid = [_profile isValid];
-                                                      if (!error && isProfileValid)
-                                                          successCallback(_profile);
-                                                      else {
-                                                          NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                                                    @"The profile cannot be loaded from the file.", NSLocalizedDescriptionKey,
-                                                                                    filePath, NSFilePathErrorKey,
-                                                                                    absoluteURL, NSURLErrorKey,
-                                                                                    nil];
-                                                          NSError *nsError = [NSError errorWithDomain:@"InvalidFile"
-                                                                                                 code:1
-                                                                                             userInfo:userInfo];
-                                                          errorCallback(nsError);
-                                                      }
-                                                      [_profile release];
-                                                      _profile = nil;
-
-                                                      dispatch_release(_ioChannel);
-                                                      _ioChannel = 0;
-                                                  });
+                                                  /* completion callback */ cleanup_handler);
         if (_ioChannel) {
+            dispatch_io_handler_t ioHandler = ^(bool done, dispatch_data_t data, int error) {
+                if (error) {
+                    dispatch_io_close(_ioChannel, DISPATCH_IO_STOP);
+                    return;
+                }
+                dispatch_data_applier_t dataApplier = ^bool (dispatch_data_t region, size_t offset, const void *buffer, size_t size) {
+                    return [self processData:(const char *)(buffer + offset) size: size];
+                };
+                bool success = dispatch_data_apply(data, dataApplier);
+                if (!success) {
+                    dispatch_io_close(_ioChannel, DISPATCH_IO_STOP);
+                    return;
+                }
+                if (done) {
+                    dispatch_io_close(_ioChannel, 0);
+                    return;
+                }
+            };
             dispatch_io_read(/* channel */ _ioChannel,
                              /* offset */ 0,
                              /* length */ SIZE_MAX,
                              /* queue */ dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0),
-                             /* handler */ ^(bool done, dispatch_data_t data, int error) {
-                                 if (error) {
-                                     dispatch_io_close(_ioChannel, DISPATCH_IO_STOP);
-                                     return;
-                                 }
-                                 bool success = dispatch_data_apply(data,
-                                                                    (dispatch_data_applier_t)^(dispatch_data_t region, size_t offset, const void *buffer, size_t size) {
-                                                                        return [self processData:(const char *)(buffer + offset) size: size];
-                                                                    });
-                                 if (!success) {
-                                     dispatch_io_close(_ioChannel, DISPATCH_IO_STOP);
-                                     return;
-                                 }
-                                 if (done) {
-                                     dispatch_io_close(_ioChannel, 0);
-                                     return;
-                                 }
-                             });
+                             /* handler */ ioHandler);
         }
     }
     return self;
