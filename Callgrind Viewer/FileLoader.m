@@ -103,7 +103,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     }
 }
 
-- (BOOL)processLine:(const char *)data size: (size_t) size
+- (BOOL)processLine:(const void *)data size: (size_t) size
 {
     NSString *string = [[[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO] autorelease];
     switch (_readingStage) {
@@ -119,16 +119,16 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     return YES;
 }
 
-// Process the data and return YES if we should continue reading the file.
-- (BOOL)processData:(const char*)data size: (size_t)size
+- (BOOL)processData:(const void*)data size: (size_t)size
 {
     size_t workOffset = 0;
+    // Process the remaining data from the previous chunk.
     if ([_pendingDataBuffer length] > 0) {
         ssize_t nextNewLine = indexOfNextNewLineChar(data, 0, size);
         if (nextNewLine >= 0) {
             assert(nextNewLine <= size);
             [_pendingDataBuffer appendBytes:data length:nextNewLine];
-            [self processLine:(const char*)[_pendingDataBuffer bytes] size:[_pendingDataBuffer length]];
+            [self processLine:[_pendingDataBuffer bytes] size:[_pendingDataBuffer length]];
             workOffset = nextNewLine + 1;
             [_pendingDataBuffer setLength:0];
         } else {
@@ -141,6 +141,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
         }
     }
 
+    // Process the new data in place.
     while (true) {
         ssize_t nextNewLine = indexOfNextNewLineChar(data, workOffset, size);
         if (nextNewLine >= 0) {
@@ -209,7 +210,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
                     return;
                 }
                 dispatch_data_applier_t dataApplier = ^bool (dispatch_data_t region, size_t offset, const void *buffer, size_t size) {
-                    return [self processData:(const char *)(buffer + offset) size: size];
+                    return [self processData:(buffer + offset) size: size];
                 };
                 bool success = dispatch_data_apply(data, dataApplier);
                 if (!success) {
