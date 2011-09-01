@@ -87,7 +87,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 - (BOOL)processFormatVersionLine:(NSString *)string
 {
     NSError *error = 0;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^version:[ \t]*(0x[a-fA-F0-9]+|\\d+)$"
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$"
                                                                            options:0
                                                                              error:&error];
     assert(!error);
