@@ -15,15 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "Profile.h"
 
-@class FileLoader;
-@class Profile;
+@implementation Profile
 
-@interface CallgrindOutputDocument : NSDocument {
-@private
-    FileLoader *_fileLoader;
-    Profile *_profile;
+@synthesize command = _command;
+
+- (BOOL)isValid
+{
+    return !!_command;
 }
 
 @end

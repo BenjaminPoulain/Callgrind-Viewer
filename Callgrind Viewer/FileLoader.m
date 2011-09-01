@@ -18,6 +18,7 @@
 #import "FileLoader.h"
 
 #import "Foundation/NSData.h"
+#import "Profile.h"
 
 static const size_t maxBufferSize = 4096;
 
@@ -55,8 +56,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
         if (match) {
             NSRange commandRange = [match rangeAtIndex: 1];
             NSString *commandName = [string substringWithRange: commandRange];
-            // FIXME: store the command in a nice object representing the profile.
-            NSLog(@"command = %@", commandName);
+            _profile.command = commandName;
             return YES;
         }
     }
@@ -163,10 +163,12 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     }
 }
 
-- (id)initWithURL:(NSURL *)absoluteURL
+- (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback
 {
     self = [super init];
     if (self) {
+        _profile = [[Profile alloc] init];
+
         _pendingDataBuffer = [[NSMutableData alloc] initWithCapacity:0];
         _readingStage = FormatVersion;
 
@@ -178,10 +180,15 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
                                                   /* mode */ 0,
                                                   /* queue */ dispatch_get_main_queue(),
                                                   /* completion callback */ ^(int error) {
-                                                      if (error != 0) {
+                                                      if (!error && [_profile isValid]) {
+                                                          successCallback(_profile);
+                                                      } else {
                                                           // FIXME: error callback to the clients of the class.
                                                           NSLog(@"Error while reading the file or reading interrupted.");
                                                       }
+                                                      [_profile release];
+                                                      _profile = nil;
+
                                                       dispatch_release(_ioChannel);
                                                       _ioChannel = 0;
                                                   });
@@ -222,6 +229,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 - (void)dealloc
 {
     assert(!_ioChannel);
+    assert(!_profile);
     [_pendingDataBuffer release];
     [super dealloc];
 }

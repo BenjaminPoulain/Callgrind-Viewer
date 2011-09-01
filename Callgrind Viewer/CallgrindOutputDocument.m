@@ -19,6 +19,7 @@
 
 #import "CallgrindOutputWindowController.h"
 #import "FileLoader.h"
+#import "Profile.h"
 
 @implementation CallgrindOutputDocument
 
@@ -36,7 +37,22 @@
 {
     [_fileLoader cancel];
     [_fileLoader release];
+    [_profile release];
     [super dealloc];
+}
+
+- (void)profileLoaded:(Profile *)profile
+{
+    assert(!_profile);
+    [profile retain];
+    _profile = profile;
+
+    NSURL *fileURL = [self fileURL];
+    NSString *fileName = [fileURL lastPathComponent];
+    [self setDisplayName:[NSString stringWithFormat:@"%@ - %@", fileName, _profile.command]];
+
+    for (NSWindowController *controller in [self windowControllers])
+        [controller synchronizeWindowTitleWithDocumentName];
 }
 
 - (void)makeWindowControllers
@@ -48,7 +64,10 @@
 - (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
     assert(!_fileLoader);
-    _fileLoader = [[FileLoader alloc] initWithURL:absoluteURL];
+    _fileLoader = [[FileLoader alloc] initWithURL:absoluteURL
+                                 fileReadCallback:^(Profile *profile) {
+                                     [self profileLoaded:profile];
+                                 }];
     return YES;
 }
 

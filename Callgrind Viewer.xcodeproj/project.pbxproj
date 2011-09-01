@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		268A56AF140FFC790066652C /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 268A56AE140FFC790066652C /* Profile.m */; };
 		268DF3C5140D242000A961F2 /* CallgrindOutputWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */; };
 		268DF3C8140E78AC00A961F2 /* FileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C7140E78AA00A961F2 /* FileLoader.m */; };
 		26ACF3A5140684FB008653A5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26ACF3A4140684FB008653A5 /* Cocoa.framework */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		268A56AD140FFC790066652C /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		268A56AE140FFC790066652C /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		268DF3C3140D242000A961F2 /* CallgrindOutputWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallgrindOutputWindowController.h; sourceTree = "<group>"; };
 		268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallgrindOutputWindowController.m; sourceTree = "<group>"; };
 		268DF3C6140E78A900A961F2 /* FileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLoader.h; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				26ACF3B9140684FB008653A5 /* CallgrindOutputWindow.xib */,
 				268DF3C6140E78A900A961F2 /* FileLoader.h */,
 				268DF3C7140E78AA00A961F2 /* FileLoader.m */,
+				268A56AD140FFC790066652C /* Profile.h */,
+				268A56AE140FFC790066652C /* Profile.m */,
 				26ACF3BC140684FB008653A5 /* MainMenu.xib */,
 				26ACF3AB140684FB008653A5 /* Supporting Files */,
 			);
@@ -180,6 +185,7 @@
 				26ACF3B8140684FB008653A5 /* CallgrindOutputDocument.m in Sources */,
 				268DF3C5140D242000A961F2 /* CallgrindOutputWindowController.m in Sources */,
 				268DF3C8140E78AC00A961F2 /* FileLoader.m in Sources */,
+				268A56AF140FFC790066652C /* Profile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

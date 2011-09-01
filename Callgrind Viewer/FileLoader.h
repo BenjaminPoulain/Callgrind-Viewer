@@ -18,9 +18,14 @@
 #import <Foundation/Foundation.h>
 
 @class NSMutableData;
+@class Profile;
+
+typedef void (^SuccessCallback)(Profile *);
 
 @interface FileLoader : NSObject {
 @private
+    __block Profile *_profile;
+
     __block dispatch_io_t _ioChannel;
 
     NSMutableData *_pendingDataBuffer;
@@ -32,7 +37,7 @@
     } _readingStage;
 }
 
-- (id)initWithURL:(NSURL *)absoluteURL;
+- (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback;
 - (void)cancel;
 
 @end
