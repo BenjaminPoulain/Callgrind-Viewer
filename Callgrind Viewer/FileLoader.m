@@ -49,10 +49,13 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 
     { // Command parsing.
         NSError *error = 0;
-        NSRegularExpression *commandRegex = [NSRegularExpression regularExpressionWithPattern:@"^cmd:[ \t]*(.*)$"
-                                                                                      options:0
-                                                                                        error:&error];
+        NSRegularExpression *commandRegex = [[NSRegularExpression alloc] initWithPattern:@"^cmd:[ \t]*(.*)$"
+                                                                                 options:0
+                                                                                   error:&error];
         NSTextCheckingResult *match = [commandRegex firstMatchInString: string options: 0 range:NSMakeRange(0, [string length])];
+        [commandRegex release];
+        commandRegex = nil;
+
         if (match) {
             NSRange commandRange = [match rangeAtIndex: 1];
             NSString *commandName = [string substringWithRange: commandRange];
@@ -68,11 +71,13 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 - (BOOL)processCreatorLine:(NSString *)string
 {
     NSError *error = 0;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^creator:.*$"
-                                                                           options:0
-                                                                             error:&error];
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^creator:.*$"
+                                                                      options:0
+                                                                        error:&error];
     assert(!error);
     NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    [regex release];
+    regex = nil;
 
     assert(matches == 0 || matches == 1);
     _readingStage = Header;
@@ -87,11 +92,13 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 - (BOOL)processFormatVersionLine:(NSString *)string
 {
     NSError *error = 0;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$"
-                                                                           options:0
-                                                                             error:&error];
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$"
+                                                                      options:0
+                                                                        error:&error];
     assert(!error);
     NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    [regex release];
+    regex = nil;
 
     assert(matches == 0 || matches == 1);
     _readingStage = Creator;
