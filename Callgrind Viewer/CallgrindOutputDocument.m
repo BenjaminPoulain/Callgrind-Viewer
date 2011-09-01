@@ -35,14 +35,23 @@
 
 - (void)dealloc
 {
-    [_fileLoader cancel];
     [_fileLoader release];
     [_profile release];
+    [_windowController release];
     [super dealloc];
+}
+
+- (void)close
+{
+    [_fileLoader cancel];
+    [super close];
 }
 
 - (void)profileLoaded:(Profile *)profile
 {
+    [_fileLoader release];
+    _fileLoader = nil;
+
     assert(!_profile);
     [profile retain];
     _profile = profile;
@@ -51,23 +60,30 @@
     NSString *fileName = [fileURL lastPathComponent];
     [self setDisplayName:[NSString stringWithFormat:@"%@ - %@", fileName, _profile.command]];
 
-    for (NSWindowController *controller in [self windowControllers])
-        [controller synchronizeWindowTitleWithDocumentName];
+    [_windowController synchronizeWindowTitleWithDocumentName];
+}
+
+- (void)errorLoadingFile:(NSError *)error
+{
+    [_fileLoader release];
+    _fileLoader = nil;
+
+    // FIXME: present a window modal panel if the window is already on screen.
+    [_windowController closeWithError:error];
 }
 
 - (void)makeWindowControllers
 {
-    CallgrindOutputWindowController *windowController = [[[CallgrindOutputWindowController alloc] init] autorelease];
-    [self addWindowController:windowController];
+    _windowController = [[CallgrindOutputWindowController alloc] init];
+    [self addWindowController:_windowController];
 }
 
 - (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
     assert(!_fileLoader);
     _fileLoader = [[FileLoader alloc] initWithURL:absoluteURL
-                                 fileReadCallback:^(Profile *profile) {
-                                     [self profileLoaded:profile];
-                                 }];
+                                 fileReadCallback:^(Profile *profile) { [self profileLoaded:profile]; }
+                                    errorCallback:^(NSError *error) { [self errorLoadingFile:error]; }];
     return YES;
 }
 

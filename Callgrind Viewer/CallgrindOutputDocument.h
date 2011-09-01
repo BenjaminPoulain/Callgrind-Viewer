@@ -17,6 +17,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class CallgrindOutputWindowController;
 @class FileLoader;
 @class Profile;
 
@@ -24,6 +25,7 @@
 @private
     FileLoader *_fileLoader;
     Profile *_profile;
+    CallgrindOutputWindowController *_windowController;
 }
 
 @end

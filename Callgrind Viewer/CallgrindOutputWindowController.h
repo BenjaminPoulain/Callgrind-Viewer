@@ -17,6 +17,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class NSError;
+
 @interface CallgrindOutputWindowController : NSWindowController
+
+- (void)closeWithError:(NSError *) error;
 
 @end

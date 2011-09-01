@@ -22,10 +22,18 @@
 - (id)init
 {
     self = [super initWithWindowNibName:@"CallgrindOutputWindow"];
-    if (self) {
-        // Add initialization here.
-    }
+    if (self)
+        [self setShouldCloseDocument:YES];
     return self;
+}
+
+- (void)didPresentErrorWithRecovery:(BOOL)didRecover contextInfo:(void *)contextInfo
+{
+    [self close];
+}
+- (void)closeWithError:(NSError *) error
+{
+    [self presentError:error modalForWindow:[self window] delegate:self didPresentSelector:@selector(didPresentErrorWithRecovery:contextInfo:) contextInfo:0];
 }
 
 @end

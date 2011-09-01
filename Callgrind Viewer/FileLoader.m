@@ -163,7 +163,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     }
 }
 
-- (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback
+- (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback errorCallback:(ErrorCallback)errorCallback
 {
     self = [super init];
     if (self) {
@@ -180,11 +180,19 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
                                                   /* mode */ 0,
                                                   /* queue */ dispatch_get_main_queue(),
                                                   /* completion callback */ ^(int error) {
-                                                      if (!error && [_profile isValid]) {
+                                                      BOOL isProfileValid = [_profile isValid];
+                                                      if (!error && isProfileValid)
                                                           successCallback(_profile);
-                                                      } else {
-                                                          // FIXME: error callback to the clients of the class.
-                                                          NSLog(@"Error while reading the file or reading interrupted.");
+                                                      else {
+                                                          NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                                                    @"The profile cannot be loaded from the file.", NSLocalizedDescriptionKey,
+                                                                                    filePath, NSFilePathErrorKey,
+                                                                                    absoluteURL, NSURLErrorKey,
+                                                                                    nil];
+                                                          NSError *nsError = [NSError errorWithDomain:@"InvalidFile"
+                                                                                                 code:1
+                                                                                             userInfo:userInfo];
+                                                          errorCallback(nsError);
                                                       }
                                                       [_profile release];
                                                       _profile = nil;
@@ -222,6 +230,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 
 - (void)cancel
 {
+    // FIXME: this does not seem to always lead to early termination of the read.
     if (_ioChannel)
         dispatch_io_close(_ioChannel, DISPATCH_IO_STOP);
 }

@@ -17,10 +17,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class NSError;
 @class NSMutableData;
 @class Profile;
 
 typedef void (^SuccessCallback)(Profile *);
+typedef void (^ErrorCallback)(NSError *);
 
 @interface FileLoader : NSObject {
 @private
@@ -37,7 +39,7 @@ typedef void (^SuccessCallback)(Profile *);
     } _readingStage;
 }
 
-- (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback;
+- (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback errorCallback:(ErrorCallback)errorCallback;
 - (void)cancel;
 
 @end
