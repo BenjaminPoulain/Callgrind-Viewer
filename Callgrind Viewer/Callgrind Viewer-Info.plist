@@ -53,6 +53,8 @@
 	<string>NSApplication</string>
 	<key>NSServices</key>
 	<array/>
+	<key>NSSupportsSuddenTermination</key>
+	<true/>
 	<key>UTExportedTypeDeclarations</key>
 	<array/>
 	<key>UTImportedTypeDeclarations</key>
