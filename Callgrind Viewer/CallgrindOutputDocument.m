@@ -61,7 +61,9 @@
 
 - (NSString *)displayName
 {
-    return [NSString stringWithFormat:@"%@ - %@", [super displayName], _profile.command];
+    if (_profile)
+        return [NSString stringWithFormat:@"%@ - %@", [super displayName], _profile.command];
+    return [super displayName];
 }
 
 - (void)errorLoadingFile:(NSError *)error
