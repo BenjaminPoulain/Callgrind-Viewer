@@ -56,11 +56,12 @@
     [profile retain];
     _profile = profile;
 
-    NSURL *fileURL = [self fileURL];
-    NSString *fileName = [fileURL lastPathComponent];
-    [self setDisplayName:[NSString stringWithFormat:@"%@ - %@", fileName, _profile.command]];
-
     [_windowController synchronizeWindowTitleWithDocumentName];
+}
+
+- (NSString *)displayName
+{
+    return [NSString stringWithFormat:@"%@ - %@", [super displayName], _profile.command];
 }
 
 - (void)errorLoadingFile:(NSError *)error
