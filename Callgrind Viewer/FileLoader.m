@@ -68,6 +68,16 @@ static NSTextCheckingResult *getFirstRegexpMatch(NSString *regexpString, NSStrin
     return match;
 }
 
+static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString *string)
+{
+    NSTextCheckingResult *match = getFirstRegexpMatch(regexpString, string);
+    if (match) {
+        NSRange range = [match rangeAtIndex: 1];
+        return [string substringWithRange: range];
+    }
+    return nil;
+}
+
 - (BOOL)processHeaderLine:(NSString *)string
 {
     if (![string length])
@@ -75,21 +85,11 @@ static NSTextCheckingResult *getFirstRegexpMatch(NSString *regexpString, NSStrin
     if ([string hasPrefix:@"#"])
         return YES;
 
-    { // Command parsing.
-        NSError *error = 0;
-        NSRegularExpression *commandRegex = [[NSRegularExpression alloc] initWithPattern:@"^cmd:[ \t]*(.*)$"
-                                                                                 options:0
-                                                                                   error:&error];
-        NSTextCheckingResult *match = [commandRegex firstMatchInString: string options: 0 range:NSMakeRange(0, [string length])];
-        [commandRegex release];
-        commandRegex = nil;
-
-        if (match) {
-            NSRange commandRange = [match rangeAtIndex: 1];
-            NSString *commandName = [string substringWithRange: commandRange];
-            _profile.command = commandName;
-            return YES;
-        }
+    // Command parsing.
+    NSString *commandName = getFirstSubgroupInRegexpMatch(@"^cmd:[ \t]*(.*)$", string);
+    if (commandName) {
+        _profile.command = commandName;
+        return YES;
     }
 
     // TargetID (pid, thread or part)
