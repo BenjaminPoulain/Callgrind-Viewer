@@ -35,9 +35,38 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     return -1;
 }
 
+- (NSString *)parseFunction:(NSString *)string regex:(NSRegularExpression *)regex
+{
+    NSTextCheckingResult *result = [regex firstMatchInString: string options: 0 range:NSMakeRange(0, [string length])];
+    if (result) {
+        NSString *functionName = nil;
+        NSRange functionRange = [result rangeAtIndex: 2];
+        if (!NSEqualRanges(functionRange, NSMakeRange(NSNotFound, 0)))
+            functionName = [string substringWithRange:functionRange];
+
+        NSRange functionIdRange = [result rangeAtIndex: 1];
+        if (!NSEqualRanges(functionIdRange, NSMakeRange(NSNotFound, 0))) {
+            NSString *functionIdSring = [string substringWithRange:functionIdRange];
+
+            if (functionName)
+                [_functionCompressedNames setObject:functionName forKey:functionIdSring];
+            else
+                functionName = [_functionCompressedNames objectForKey:functionIdSring];
+        }
+        assert(functionName);
+        return functionName;
+    }
+    return nil;
+}
+
 - (BOOL)processBodyLine:(NSString *)string
 {
-    return NO;
+    if ([self parseFunction:string regex:_functionRegex])
+        return YES;
+    if ([self parseFunction:string regex:_calledFunctionRegex])
+        return YES;
+    // FIXME: fully implement body parsing.
+    return YES;
 }
 
 static bool regexMatchesString(NSString *regexpString, NSString *string)
@@ -123,7 +152,7 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
 
     if (_positionOfInstructionCost != NSNotFound) {
         _readingStage = Body;
-        [self processBodyLine:string];
+        return [self processBodyLine:string];
     }
     return NO;
 }
@@ -221,6 +250,17 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
         _readingStage = FormatVersion;
 
         _positionOfInstructionCost = NSNotFound;
+        _functionCompressedNames = [[NSMutableDictionary alloc] init];
+        NSError *error = 0;
+        _functionRegex = [[NSRegularExpression alloc] initWithPattern:@"^fn=\\((\\d+)\\)?(?: (.*))?$"
+                                                               options:0
+                                                                 error:&error];
+        assert(!error);
+        _calledFunctionRegex = [[NSRegularExpression alloc] initWithPattern:@"^cfn=\\((\\d+)\\)?(?: (.*))?$"
+                                                                     options:0
+                                                                       error:&error];
+        assert(!error);
+
         assert([absoluteURL isFileURL]);
         NSString* filePath = [absoluteURL path];
 
@@ -292,6 +332,9 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
     assert(!_ioChannel);
     assert(!_profile);
     [_pendingDataBuffer release];
+    [_functionCompressedNames release];
+    [_functionRegex release];
+    [_calledFunctionRegex release];
     [super dealloc];
 }
 
