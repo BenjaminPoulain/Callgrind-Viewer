@@ -37,7 +37,7 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 
 - (BOOL)processBodyLine:(NSString *)string
 {
-    return YES;
+    return NO;
 }
 
 static bool regexMatchesString(NSString *regexpString, NSString *string)
@@ -101,9 +101,10 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
         return YES;
 
     { // CostLineDef::events
-        NSTextCheckingResult *match = getFirstRegexpMatch(@"^events:[ \t]*((?:[a-zA-Z][a-zA-Z0-9]*)(?:[ \t]+(?:[a-zA-Z][a-zA-Z0-9]*))*)$", string);
-        if (match) {
-            // FIME: Store to values to parse the file.
+        NSString *eventsName = getFirstSubgroupInRegexpMatch(@"^events:[ \t]*((?:[a-zA-Z][a-zA-Z0-9]*)(?:[ \t]+(?:[a-zA-Z][a-zA-Z0-9]*))*)$", string);
+        if (eventsName) {
+            NSArray *events = [eventsName componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+            _positionOfInstructionCost = [events indexOfObject:@"Ir"];
             return YES;
         }
     }
@@ -120,8 +121,10 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
     if (regexMatchesString(@"^summary:[\t ]*(?:0x[a-fA-F0-9]+|\\d+)([\t ]+(?:0x[a-fA-F0-9]+|\\d+))*$", string))
         return YES;
 
-    // FIXME: process body.
-    NSLog(@"Invalid string = \"%@\"", string);
+    if (_positionOfInstructionCost != NSNotFound) {
+        _readingStage = Body;
+        [self processBodyLine:string];
+    }
     return NO;
 }
 
@@ -217,6 +220,7 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
         _pendingDataBuffer = [[NSMutableData alloc] initWithCapacity:0];
         _readingStage = FormatVersion;
 
+        _positionOfInstructionCost = NSNotFound;
         assert([absoluteURL isFileURL]);
         NSString* filePath = [absoluteURL path];
 

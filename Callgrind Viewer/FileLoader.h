@@ -27,6 +27,7 @@ typedef void (^ErrorCallback)(NSError *);
 @interface FileLoader : NSObject {
 @private
     __block Profile *_profile;
+    NSUInteger _positionOfInstructionCost;
 
     __block dispatch_io_t _ioChannel;
 
