@@ -40,6 +40,34 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     return YES;
 }
 
+static bool regexMatchesString(NSString *regexpString, NSString *string)
+{
+    NSError *error = 0;
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:regexpString
+                                                                      options:0
+                                                                        error:&error];
+    assert(!error);
+    NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    [regex release];
+    regex = nil;
+
+    assert(matches == 0 || matches == 1);
+    return !!matches;
+}
+
+static NSTextCheckingResult *getFirstRegexpMatch(NSString *regexpString, NSString *string)
+{
+    NSError *error = 0;
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:regexpString
+                                                                      options:0
+                                                                        error:&error];
+    assert(!error);
+    NSTextCheckingResult *match = [regex firstMatchInString: string options: 0 range:NSMakeRange(0, [string length])];
+    [regex release];
+    regex = nil;
+    return match;
+}
+
 - (BOOL)processHeaderLine:(NSString *)string
 {
     if (![string length])
@@ -64,8 +92,37 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
         }
     }
 
-    // FIXME: parse the remaining headers.
-    return YES;
+    // TargetID (pid, thread or part)
+    if (regexMatchesString(@"^(?:pid|thread|part):[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$", string))
+        return YES;
+
+    // Description
+    if (regexMatchesString(@"^desc:[ \t]*(?:[a-zA-Z][A-Za-z0-9 ]*)[ \t]*:.*$", string))
+        return YES;
+
+    { // CostLineDef::events
+        NSTextCheckingResult *match = getFirstRegexpMatch(@"^events:[ \t]*((?:[a-zA-Z][a-zA-Z0-9]*)(?:[ \t]+(?:[a-zA-Z][a-zA-Z0-9]*))*)$", string);
+        if (match) {
+            // FIME: Store to values to parse the file.
+            return YES;
+        }
+    }
+
+    { // CostLineDef::positions
+        NSTextCheckingResult *match = getFirstRegexpMatch(@"^positions:[\t ]*(instr)?([\t ]+line)?$", string);
+        if (match) {
+            // FIME: Store to values to parse the file.
+            return YES;
+        }
+    }
+
+    // Summary (not in grammar but appear in practice)
+    if (regexMatchesString(@"^summary:[\t ]*(?:0x[a-fA-F0-9]+|\\d+)([\t ]+(?:0x[a-fA-F0-9]+|\\d+))*$", string))
+        return YES;
+
+    // FIXME: process body.
+    NSLog(@"Invalid string = \"%@\"", string);
+    return NO;
 }
 
 - (BOOL)processCreatorLine:(NSString *)string
@@ -135,7 +192,8 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
         if (nextNewLine >= 0) {
             assert(nextNewLine <= size);
             [_pendingDataBuffer appendBytes:data length:nextNewLine];
-            [self processLine:[_pendingDataBuffer bytes] size:[_pendingDataBuffer length]];
+            if (![self processLine:[_pendingDataBuffer bytes] size:[_pendingDataBuffer length]])
+                return NO;
             workOffset = nextNewLine + 1;
             [_pendingDataBuffer setLength:0];
         } else {
@@ -154,7 +212,8 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
         if (nextNewLine >= 0) {
             assert(workOffset < size);
             assert(nextNewLine < size);
-            [self processLine: (data + workOffset) size:(nextNewLine - workOffset)];
+            if (![self processLine: (data + workOffset) size:(nextNewLine - workOffset)])
+                return NO;
             workOffset = nextNewLine + 1;
         } else {
             assert(workOffset <= size);
