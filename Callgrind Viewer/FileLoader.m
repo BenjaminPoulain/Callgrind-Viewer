@@ -127,18 +127,7 @@ static NSTextCheckingResult *getFirstRegexpMatch(NSString *regexpString, NSStrin
 
 - (BOOL)processCreatorLine:(NSString *)string
 {
-    NSError *error = 0;
-    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^creator:.*$"
-                                                                      options:0
-                                                                        error:&error];
-    assert(!error);
-    NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
-    [regex release];
-    regex = nil;
-
-    assert(matches == 0 || matches == 1);
-    _readingStage = Header;
-    if (matches)
+    if (regexMatchesString(@"^creator:.*$", string))
         return YES;
     else {
         // The creator line is optional, process next stage.
@@ -148,18 +137,7 @@ static NSTextCheckingResult *getFirstRegexpMatch(NSString *regexpString, NSStrin
 
 - (BOOL)processFormatVersionLine:(NSString *)string
 {
-    NSError *error = 0;
-    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$"
-                                                                      options:0
-                                                                        error:&error];
-    assert(!error);
-    NSUInteger matches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
-    [regex release];
-    regex = nil;
-
-    assert(matches == 0 || matches == 1);
-    _readingStage = Creator;
-    if (matches)
+    if (regexMatchesString(@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$", string))
         return YES;
     else {
         // The version line is optional, process next stage.
