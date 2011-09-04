@@ -17,19 +17,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class FunctionDescriptor;
-
-@interface Profile : NSObject {
+@interface FunctionDescriptor : NSObject {
 @private
-    NSString *_command;
-    NSMutableSet *_functions;
+    NSString *_name;
 }
 
-@property (nonatomic, copy) NSString *command;
-@property (nonatomic, readonly) NSSet *functions;
+@property (nonatomic, readonly) NSString *name;
 
-- (BOOL)isValid;
-
-- (void)addFunction:(FunctionDescriptor*)function;
+- (id)initWithName:(NSString *)name;
 
 @end

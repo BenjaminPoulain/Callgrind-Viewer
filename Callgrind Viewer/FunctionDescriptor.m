@@ -15,21 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#import "FunctionDescriptor.h"
 
-@class FunctionDescriptor;
+@implementation FunctionDescriptor
 
-@interface Profile : NSObject {
-@private
-    NSString *_command;
-    NSMutableSet *_functions;
+@synthesize name = _name;
+
+- (id)initWithName:(NSString *)functionName
+{
+    self = [super init];
+    if (self) {
+        [functionName retain];
+        _name = functionName;
+    }
+    
+    return self;
 }
 
-@property (nonatomic, copy) NSString *command;
-@property (nonatomic, readonly) NSSet *functions;
-
-- (BOOL)isValid;
-
-- (void)addFunction:(FunctionDescriptor*)function;
+- (void)dealloc
+{
+    [_name release];
+}
 
 @end

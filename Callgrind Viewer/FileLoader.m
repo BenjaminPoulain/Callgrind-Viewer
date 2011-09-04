@@ -18,6 +18,7 @@
 #import "FileLoader.h"
 
 #import "Foundation/NSData.h"
+#import "FunctionDescriptor.h"
 #import "Profile.h"
 
 static const size_t maxBufferSize = 4096;
@@ -61,8 +62,13 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
 
 - (BOOL)processBodyLine:(NSString *)string
 {
-    if ([self parseFunction:string regex:_functionRegex])
+    NSString *functionName = [self parseFunction:string regex:_functionRegex];
+    if (functionName) {
+        FunctionDescriptor *function = [[FunctionDescriptor alloc] initWithName:functionName];
+        [_profile addFunction:function];
+        [function release];
         return YES;
+    }
     if ([self parseFunction:string regex:_calledFunctionRegex])
         return YES;
     // FIXME: fully implement body parsing.

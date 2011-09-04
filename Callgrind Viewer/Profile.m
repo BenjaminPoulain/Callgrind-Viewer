@@ -20,10 +20,29 @@
 @implementation Profile
 
 @synthesize command = _command;
+@synthesize functions = _functions;
 
 - (BOOL)isValid
 {
     return !!_command;
+}
+
+- (void)addFunction:(FunctionDescriptor*)function
+{
+    [_functions addObject:function];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self)
+        _functions = [[NSMutableSet alloc] init];
+    return self;
+}
+
+- (void)dealloc
+{
+    [_functions release];
 }
 
 @end
