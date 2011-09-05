@@ -10,6 +10,7 @@
 		268A56AF140FFC790066652C /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 268A56AE140FFC790066652C /* Profile.m */; };
 		268DF3C5140D242000A961F2 /* CallgrindOutputWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */; };
 		268DF3C8140E78AC00A961F2 /* FileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C7140E78AA00A961F2 /* FileLoader.m */; };
+		269063301415298B0095B866 /* ProfileTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690632F1415298B0095B866 /* ProfileTableViewDataSource.m */; };
 		26ACF3A5140684FB008653A5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26ACF3A4140684FB008653A5 /* Cocoa.framework */; };
 		26ACF3AF140684FB008653A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3AD140684FB008653A5 /* InfoPlist.strings */; };
 		26ACF3B1140684FB008653A5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ACF3B0140684FB008653A5 /* main.m */; };
@@ -27,6 +28,8 @@
 		268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallgrindOutputWindowController.m; sourceTree = "<group>"; };
 		268DF3C6140E78A900A961F2 /* FileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLoader.h; sourceTree = "<group>"; };
 		268DF3C7140E78AA00A961F2 /* FileLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLoader.m; sourceTree = "<group>"; };
+		2690632E1415298B0095B866 /* ProfileTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewDataSource.h; sourceTree = "<group>"; };
+		2690632F1415298B0095B866 /* ProfileTableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewDataSource.m; sourceTree = "<group>"; };
 		26ACF3A0140684FB008653A5 /* Callgrind Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Callgrind Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26ACF3A4140684FB008653A5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		26ACF3A7140684FB008653A5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -129,6 +132,8 @@
 				268A56AE140FFC790066652C /* Profile.m */,
 				26D1672A1412F86B00F6C199 /* FunctionDescriptor.h */,
 				26D1672B1412F86B00F6C199 /* FunctionDescriptor.m */,
+				2690632E1415298B0095B866 /* ProfileTableViewDataSource.h */,
+				2690632F1415298B0095B866 /* ProfileTableViewDataSource.m */,
 			);
 			name = ProfileModel;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 				268DF3C8140E78AC00A961F2 /* FileLoader.m in Sources */,
 				268A56AF140FFC790066652C /* Profile.m in Sources */,
 				26D1672C1412F86B00F6C199 /* FunctionDescriptor.m in Sources */,
+				269063301415298B0095B866 /* ProfileTableViewDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

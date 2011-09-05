@@ -23,6 +23,8 @@
 
 @implementation CallgrindOutputDocument
 
+@synthesize profile = _profile;
+
 - (id)init
 {
     self = [super init];
@@ -54,7 +56,9 @@
 
     assert(!_profile);
     [profile retain];
+    [self willChangeValueForKey:@"profile"];
     _profile = profile;
+    [self didChangeValueForKey:@"profile"];
 
     [_windowController synchronizeWindowTitleWithDocumentName];
 }

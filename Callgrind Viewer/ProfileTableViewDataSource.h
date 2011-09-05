@@ -15,19 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-@class CallgrindOutputWindowController;
-@class FileLoader;
 @class Profile;
 
-@interface CallgrindOutputDocument : NSDocument {
+@interface ProfileTableViewDataSource : NSObject <NSTableViewDataSource> {
 @private
-    FileLoader *_fileLoader;
-    Profile *_profile;
-    CallgrindOutputWindowController *_windowController;
+    NSArray *_functions;
 }
 
-@property (nonatomic, readonly) Profile *profile;
+- (id)initWithProfile:(Profile *)profile;
 
 @end

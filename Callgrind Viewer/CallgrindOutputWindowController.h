@@ -19,7 +19,15 @@
 
 @class NSError;
 
-@interface CallgrindOutputWindowController : NSWindowController
+@class ProfileTableViewDataSource;
+
+@interface CallgrindOutputWindowController : NSWindowController {
+@private
+    NSTableView *_functionTableView;
+    ProfileTableViewDataSource *_profileTableViewDataSource;
+}
+
+@property (nonatomic, assign) IBOutlet NSTableView *functionTableView;
 
 - (void)closeWithError:(NSError *) error;
 

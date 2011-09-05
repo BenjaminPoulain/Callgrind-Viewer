@@ -17,7 +17,11 @@
 
 #import "CallgrindOutputWindowController.h"
 
+#import "ProfileTableViewDataSource.h"
+
 @implementation CallgrindOutputWindowController
+
+@synthesize functionTableView = _functionTableView;
 
 - (id)init
 {
@@ -27,6 +31,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [_profileTableViewDataSource release];
+}
+
 - (void)didPresentErrorWithRecovery:(BOOL)didRecover contextInfo:(void *)contextInfo
 {
     [self close];
@@ -34,6 +43,36 @@
 - (void)closeWithError:(NSError *) error
 {
     [self presentError:error modalForWindow:[self window] delegate:self didPresentSelector:@selector(didPresentErrorWithRecovery:contextInfo:) contextInfo:0];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    assert([keyPath isEqual:@"profile"]);
+    [_profileTableViewDataSource release];
+    Profile *newProfile = [change objectForKey:NSKeyValueChangeNewKey];
+    _profileTableViewDataSource = [[ProfileTableViewDataSource alloc] initWithProfile:newProfile];
+    [_functionTableView setDataSource:_profileTableViewDataSource];
+}
+
+- (void)setDocument:(NSDocument *)document
+{
+    NSDocument *previousDocument = [self document];
+    if (previousDocument == document)
+        return;
+
+    if (previousDocument)
+        [previousDocument removeObserver:self forKeyPath:@"profile"];
+    [super setDocument:document];
+
+    [document addObserver:self
+               forKeyPath:@"profile"
+                  options:NSKeyValueObservingOptionNew
+                  context:0];
+}
+
+- (void)windowDidLoad
+{
+    [_functionTableView setDataSource:_profileTableViewDataSource];
 }
 
 @end
