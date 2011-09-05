@@ -48,4 +48,14 @@
     return [function valueForKey:[aTableColumn identifier]];
 }
 
+- (void)tableView:(NSTableView *)aTableView sortDescriptorsDidChange:(NSArray *)oldDescriptors
+{
+    NSArray *sortDescriptors = [aTableView sortDescriptors];
+    NSArray *newFunctionArray = [_functions sortedArrayUsingDescriptors:sortDescriptors];
+    [newFunctionArray retain];
+    [_functions release];
+    _functions = newFunctionArray;
+    [aTableView reloadData];
+}
+
 @end
