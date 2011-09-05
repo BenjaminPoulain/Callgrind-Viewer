@@ -22,19 +22,31 @@
 
 @implementation ProfileTableViewDataSource
 
+static inline NSArray *getFunctionsArray(Profile *profile)
+{
+    return [[profile functions] allObjects];
+}
+
 - (id)initWithProfile:(Profile *)profile
 {
     self = [super init];
     if (self) {
-        _functions = [[profile functions] allObjects];
+        _profile = profile;
+        [_profile retain];
+
+        _functions = getFunctionsArray(_profile);
         [_functions retain];
+
+        _activeFilterString = [[NSString alloc] init];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [_profile release];
     [_functions release];
+    [_activeFilterString release];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
@@ -56,6 +68,59 @@
     [_functions release];
     _functions = newFunctionArray;
     [aTableView reloadData];
+}
+
+static inline bool stringContainsOtherString(NSString *stringContaining, NSString *stringContained)
+{
+    return !NSEqualRanges([stringContaining rangeOfString:stringContained], NSMakeRange(NSNotFound, 0));
+}
+
+static inline bool stringContainsOtherStringCaseInsensitive(NSString *stringContaining, NSString *stringContained)
+{
+    return !NSEqualRanges([stringContaining rangeOfString:stringContained options:NSCaseInsensitiveSearch],
+                          NSMakeRange(NSNotFound, 0));
+}
+
+
+- (void)tableView:(NSTableView*)tableView filterFunctionsByName:(NSString *)name
+{
+    if (![name length]) {
+        // Special case: no filtering.
+        [_functions release];
+        _functions = getFunctionsArray(_profile);
+        [_functions retain];
+
+        [_activeFilterString release];
+        _activeFilterString = [[NSString alloc] init];
+
+        [self tableView:tableView sortDescriptorsDidChange:nil];
+        return;
+    }
+
+    // Find the smallest array worth filtering.
+    NSString *lowerCaseName = [name lowercaseString];
+    NSArray *arrayToFilter;
+    if (stringContainsOtherString(lowerCaseName, _activeFilterString))
+        arrayToFilter = _functions;
+    else
+        arrayToFilter = getFunctionsArray(_profile);
+
+    // Reset the active filter attribute.
+    [_activeFilterString release];
+    [lowerCaseName retain];
+    _activeFilterString = lowerCaseName;
+
+    // Filter the array and keep it as new active function array.
+    NSPredicate *filteringPredicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return stringContainsOtherStringCaseInsensitive([evaluatedObject name], lowerCaseName);
+    }];
+
+    NSArray *filteredArray = [arrayToFilter filteredArrayUsingPredicate:filteringPredicate];
+    [filteredArray retain];
+    [_functions release];
+    _functions = filteredArray;
+
+    [self tableView:tableView sortDescriptorsDidChange:nil];
 }
 
 @end

@@ -29,6 +29,8 @@
 
 @property (nonatomic, assign) IBOutlet NSTableView *functionTableView;
 
+- (IBAction)filterFunctionsByName:(id)sender;
+
 - (void)closeWithError:(NSError *) error;
 
 @end

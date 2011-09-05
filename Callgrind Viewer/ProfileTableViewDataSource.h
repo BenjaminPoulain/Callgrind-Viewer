@@ -21,9 +21,12 @@
 
 @interface ProfileTableViewDataSource : NSObject <NSTableViewDataSource> {
 @private
+    Profile *_profile;
     NSArray *_functions;
+    NSString *_activeFilterString;
 }
 
 - (id)initWithProfile:(Profile *)profile;
+- (void)tableView:(NSTableView*)tableView filterFunctionsByName:(NSString *)name;
 
 @end

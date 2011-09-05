@@ -36,6 +36,11 @@
     [_profileTableViewDataSource release];
 }
 
+- (IBAction)filterFunctionsByName:(id)sender
+{
+    [_profileTableViewDataSource tableView:_functionTableView filterFunctionsByName:[sender stringValue]];
+}
+
 - (void)didPresentErrorWithRecovery:(BOOL)didRecover contextInfo:(void *)contextInfo
 {
     [self close];
