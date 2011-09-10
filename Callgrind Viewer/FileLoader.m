@@ -60,8 +60,9 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     return nil;
 }
 
-- (BOOL)processBodyLine:(NSString *)string
+- (BOOL)processBodyLine:(const void *)data size:(size_t)size
 {
+    NSString *string = [[[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO] autorelease];
     NSString *functionName = [self parseFunction:string regex:_functionRegex];
     if (functionName) {
         FunctionDescriptor *function = [[FunctionDescriptor alloc] initWithName:functionName];
@@ -113,12 +114,14 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
     return nil;
 }
 
-- (BOOL)processHeaderLine:(NSString *)string
+- (BOOL)processHeaderLine:(const void *)data size: (size_t)size
 {
-    if (![string length])
+    if (!size)
         return YES;
-    if ([string hasPrefix:@"#"])
+    if (((char*)data)[0] == '#')
         return YES;
+
+    NSString *string = [[[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO] autorelease];
 
     // Command parsing.
     NSString *commandName = getFirstSubgroupInRegexpMatch(@"^cmd:[ \t]*(.*)$", string);
@@ -158,43 +161,48 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
 
     if (_positionOfInstructionCost != NSNotFound) {
         _readingStage = Body;
-        return [self processBodyLine:string];
+        return [self processBodyLine:data size:size];
     }
     return NO;
 }
 
-- (BOOL)processCreatorLine:(NSString *)string
+- (BOOL)processCreatorLine:(const void *)data size:(size_t)size
 {
-    if (regexMatchesString(@"^creator:.*$", string))
+    NSString *string = [[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO];
+    BOOL match = regexMatchesString(@"^creator:.*$", string);
+    [string release];
+    if (match)
         return YES;
     else {
         // The creator line is optional, process next stage.
-        return [self processHeaderLine:string];
+        return [self processHeaderLine:data size:size];
     }
 }
 
-- (BOOL)processFormatVersionLine:(NSString *)string
+- (BOOL)processFormatVersionLine:(const void *)data size:(size_t)size
 {
-    if (regexMatchesString(@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$", string))
+    NSString *string = [[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO];
+    BOOL match = regexMatchesString(@"^version:[ \t]*(?:0x[a-fA-F0-9]+|\\d+)$", string);
+    [string release];
+    if (match)
         return YES;
     else {
         // The version line is optional, process next stage.
-        return [self processCreatorLine:string];
+        return [self processCreatorLine:data size:size];
     }
 }
 
-- (BOOL)processLine:(const void *)data size: (size_t) size
+- (BOOL)processLine:(const void *)data size:(size_t)size
 {
-    NSString *string = [[[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO] autorelease];
     switch (_readingStage) {
         case FormatVersion:
-            return [self processFormatVersionLine:string];
+            return [self processFormatVersionLine:data size:size];
         case Creator:
-            return [self processCreatorLine:string];
+            return [self processCreatorLine:data size:size];
         case Header:
-            return [self processHeaderLine:string];
+            return [self processHeaderLine:data size:size];
         case Body:
-            return [self processBodyLine:string];
+            return [self processBodyLine:data size:size];
     }
     return YES;
 }
