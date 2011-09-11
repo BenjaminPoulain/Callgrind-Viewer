@@ -93,7 +93,7 @@ static inline NSString *extractFunctionName(const char *data, size_t size, size_
     return nil;
 }
 
-- (NSString *)parseFunction:(const char *)data size:(size_t)size
+static NSString *parseFunctionSymbol(const char *data, size_t size, NSMutableDictionary *functionCompressedNames)
 {
     if (size < 5) // 5 = len("fn= n") || len("fn=()")
         return nil;
@@ -107,40 +107,40 @@ static inline NSString *extractFunctionName(const char *data, size_t size, size_
 
     if (functionIdSring) {
         if (functionName)
-            [_functionCompressedNames setObject:functionName forKey:functionIdSring];
+            [functionCompressedNames setObject:functionName forKey:functionIdSring];
         else
-            functionName = [_functionCompressedNames objectForKey:functionIdSring];
+            functionName = [functionCompressedNames objectForKey:functionIdSring];
     }
 
     assert(functionName);
     return functionName;
 }
 
-- (NSString *)parseCalledFunction:(const char *)data size:(size_t)size
+static NSString *parseCalledFunctionSymbol(const char *data, size_t size, NSMutableDictionary *functionCompressedNames)
 {
     assert(size >= 1);
     if (data[0] == 'c')
-        return [self parseFunction:(data + 1) size:(size - 1)];
+        return parseFunctionSymbol(data + 1, size - 1, functionCompressedNames);
     return nil;
 }
 
-- (BOOL)processBodyLine:(const void *)data size:(size_t)size
+static bool processBodyLine(const void *data, size_t size, Profile *profile, NSMutableDictionary *functionCompressedNames)
 {
     if (!size)
-        return YES;
+      return true;
 
-    const char *charData = data;
-    NSString *functionName = [self parseFunction:charData size:size];
+    NSString *functionName = parseFunctionSymbol(data, size, functionCompressedNames);
     if (functionName) {
         FunctionDescriptor *function = [[FunctionDescriptor alloc] initWithName:functionName];
-        [_profile addFunction:function];
+        [profile addFunction:function];
         [function release];
-        return YES;
+        return true;
     }
-    if ([self parseCalledFunction:charData size:size])
-        return YES;
+    if (parseCalledFunctionSymbol(data, size, functionCompressedNames))
+        return true;
     // FIXME: fully implement body parsing.
-    return YES;
+    return true;
+
 }
 
 static bool regexMatchesString(NSString *regexpString, NSString *string)
@@ -228,7 +228,7 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
 
     if (_positionOfInstructionCost != NSNotFound) {
         _readingStage = Body;
-        return [self processBodyLine:data size:size];
+        return processBodyLine(data, size, _profile, _functionCompressedNames);
     }
     return NO;
 }
@@ -269,7 +269,7 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
         case Header:
             return [self processHeaderLine:data size:size];
         case Body:
-            return [self processBodyLine:data size:size];
+            return processBodyLine(data, size, _profile, _functionCompressedNames);
     }
     return YES;
 }
