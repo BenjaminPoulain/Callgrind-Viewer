@@ -36,41 +36,108 @@ static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, si
     return -1;
 }
 
-- (NSString *)parseFunction:(NSString *)string regex:(NSRegularExpression *)regex
+static inline NSString *extractFunctionIdString(const char *data, size_t size, size_t *currentIndex)
 {
-    NSTextCheckingResult *result = [regex firstMatchInString: string options: 0 range:NSMakeRange(0, [string length])];
-    if (result) {
-        NSString *functionName = nil;
-        NSRange functionRange = [result rangeAtIndex: 2];
-        if (!NSEqualRanges(functionRange, NSMakeRange(NSNotFound, 0)))
-            functionName = [string substringWithRange:functionRange];
+    // Preconditions that must be ensured by the caller.
+    assert(size > *currentIndex);
+    assert(size > (*currentIndex + 1));
 
-        NSRange functionIdRange = [result rangeAtIndex: 1];
-        if (!NSEqualRanges(functionIdRange, NSMakeRange(NSNotFound, 0))) {
-            NSString *functionIdSring = [string substringWithRange:functionIdRange];
+    if (data[*currentIndex] == '(') {
+        const size_t initialCharacterIndex = *currentIndex + 1;
+        assert(initialCharacterIndex < size);
+        size_t endParenthesis = initialCharacterIndex;
 
-            if (functionName)
-                [_functionCompressedNames setObject:functionName forKey:functionIdSring];
-            else
-                functionName = [_functionCompressedNames objectForKey:functionIdSring];
+        // Find the index of the closing parenthesis enclosing only number characters.
+        do {
+            if (data[endParenthesis] == ')')
+                break;
+
+            if (data[endParenthesis] < '0' || data[endParenthesis] > '9')
+                return nil;
+
+            ++endParenthesis;
+        } while (endParenthesis < size);
+
+        // Create a new NSString out the digit characters we extracted.
+        if (endParenthesis > initialCharacterIndex) {
+            assert(endParenthesis < size);
+            NSString *functionIdSring = [[NSString alloc] initWithBytes:(data + initialCharacterIndex)
+                                                                 length:(endParenthesis - initialCharacterIndex)
+                                                               encoding:NSASCIIStringEncoding];
+            *currentIndex = endParenthesis + 1;
+            assert(*currentIndex <= size);
+            return [functionIdSring autorelease];
+        } else {
+            // Possible in theory but never happen in practice.
+            assert(false);
+            return nil;
         }
-        assert(functionName);
-        return functionName;
     }
+    return nil;
+}
+
+static inline NSString *extractFunctionName(const char *data, size_t size, size_t currentIndex)
+{
+    // First, skip whitespaces.
+    while (currentIndex < size && data[currentIndex] == ' ')
+        ++currentIndex;
+
+    // Any character left behind in this line is part of the function name.
+    if (currentIndex < size) {
+        NSString *functionNameString = [[NSString alloc] initWithBytes:(data + currentIndex)
+                                                                length:(size - currentIndex)
+                                                              encoding:NSASCIIStringEncoding];
+        assert([functionNameString length] > 0);
+        return [functionNameString autorelease];
+    }
+    return nil;
+}
+
+- (NSString *)parseFunction:(const char *)data size:(size_t)size
+{
+    if (size < 5) // 5 = len("fn= n") || len("fn=()")
+        return nil;
+
+    if (!(data[0] == 'f' && data[1] == 'n' && data[2] == '='))
+        return nil;
+
+    size_t functionStringStartIndex = 3;
+    NSString *functionIdSring = extractFunctionIdString(data, size, &functionStringStartIndex);
+    NSString *functionName = extractFunctionName(data, size, functionStringStartIndex);
+
+    if (functionIdSring) {
+        if (functionName)
+            [_functionCompressedNames setObject:functionName forKey:functionIdSring];
+        else
+            functionName = [_functionCompressedNames objectForKey:functionIdSring];
+    }
+
+    assert(functionName);
+    return functionName;
+}
+
+- (NSString *)parseCalledFunction:(const char *)data size:(size_t)size
+{
+    assert(size >= 1);
+    if (data[0] == 'c')
+        return [self parseFunction:(data + 1) size:(size - 1)];
     return nil;
 }
 
 - (BOOL)processBodyLine:(const void *)data size:(size_t)size
 {
-    NSString *string = [[[NSString alloc] initWithBytesNoCopy:(void *)data length:size encoding:NSASCIIStringEncoding freeWhenDone:NO] autorelease];
-    NSString *functionName = [self parseFunction:string regex:_functionRegex];
+    if (!size)
+        return YES;
+
+    const char *charData = data;
+    NSString *functionName = [self parseFunction:charData size:size];
     if (functionName) {
         FunctionDescriptor *function = [[FunctionDescriptor alloc] initWithName:functionName];
         [_profile addFunction:function];
         [function release];
         return YES;
     }
-    if ([self parseFunction:string regex:_calledFunctionRegex])
+    if ([self parseCalledFunction:charData size:size])
         return YES;
     // FIXME: fully implement body parsing.
     return YES;
@@ -265,15 +332,6 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
 
         _positionOfInstructionCost = NSNotFound;
         _functionCompressedNames = [[NSMutableDictionary alloc] init];
-        NSError *error = 0;
-        _functionRegex = [[NSRegularExpression alloc] initWithPattern:@"^fn=\\((\\d+)\\)?(?: (.*))?$"
-                                                               options:0
-                                                                 error:&error];
-        assert(!error);
-        _calledFunctionRegex = [[NSRegularExpression alloc] initWithPattern:@"^cfn=\\((\\d+)\\)?(?: (.*))?$"
-                                                                     options:0
-                                                                       error:&error];
-        assert(!error);
 
         assert([absoluteURL isFileURL]);
         NSString* filePath = [absoluteURL path];
@@ -347,8 +405,6 @@ static NSString *getFirstSubgroupInRegexpMatch(NSString *regexpString, NSString 
     assert(!_profile);
     [_pendingDataBuffer release];
     [_functionCompressedNames release];
-    [_functionRegex release];
-    [_calledFunctionRegex release];
     [super dealloc];
 }
 

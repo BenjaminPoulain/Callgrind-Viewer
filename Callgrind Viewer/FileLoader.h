@@ -29,8 +29,6 @@ typedef void (^ErrorCallback)(NSError *);
     __block Profile *_profile;
     NSUInteger _positionOfInstructionCost;
     NSMutableDictionary *_functionCompressedNames;
-    NSRegularExpression *_functionRegex;
-    NSRegularExpression *_calledFunctionRegex;
 
     __block dispatch_io_t _ioChannel;
 
