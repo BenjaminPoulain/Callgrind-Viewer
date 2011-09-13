@@ -21,15 +21,13 @@
 
 @interface Profile : NSObject {
 @private
-    NSString *_command;
-    NSMutableSet *_functions;
+    void *_callgrindProfile;
 }
 
-@property (nonatomic, copy) NSString *command;
-@property (nonatomic, readonly) NSSet *functions;
+@property (nonatomic, readonly) NSString *command;
+@property (nonatomic, readonly) NSArray *functions;
 
-- (BOOL)isValid;
-
-- (void)addFunction:(FunctionDescriptor*)function;
+// We take ownership of the profile!
+- (id)initWithProfile:(void *)profile;
 
 @end

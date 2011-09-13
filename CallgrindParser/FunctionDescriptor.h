@@ -15,15 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#ifndef FunctionDescriptor_h
+#define FunctionDescriptor_h
 
-@interface FunctionDescriptor : NSObject {
-@private
-    void *_descriptor;
+#include <string>
+
+using namespace std;
+
+/* The classes below are exported */
+#pragma GCC visibility push(default)
+
+namespace CallgrindParser {
+
+class FunctionDescriptor
+{
+public:
+    FunctionDescriptor(const string &name);
+    const string &name() const { return m_name; }
+
+private:
+    string m_name;
+};
+
 }
 
-@property (nonatomic, readonly) NSString *name;
+#pragma GCC visibility pop
 
-- (id)initWithDescriptor:(void *)descriptor;
-
-@end
+#endif /* FunctionDescriptor_h */

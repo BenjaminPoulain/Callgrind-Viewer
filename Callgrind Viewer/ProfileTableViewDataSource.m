@@ -24,7 +24,7 @@
 
 static inline NSArray *getFunctionsArray(Profile *profile)
 {
-    return [[profile functions] allObjects];
+    return [profile functions];
 }
 
 - (id)initWithProfile:(Profile *)profile

@@ -15,15 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#include "Profile.h"
 
-@interface FunctionDescriptor : NSObject {
-@private
-    void *_descriptor;
+#include "FunctionDescriptor.h"
+
+namespace CallgrindParser
+{
+
+Profile::~Profile()
+{
+    const size_t vectorSize = functionDescriptorCount();
+    for (size_t i = 0; i < vectorSize; ++i)
+        delete functionDescriptorAt(i);
 }
 
-@property (nonatomic, readonly) NSString *name;
+bool Profile::isValid() const
+{
+    return !!command().size();
+}
 
-- (id)initWithDescriptor:(void *)descriptor;
+FunctionDescriptor *Profile::addFunction(const string &name)
+{
+    FunctionDescriptor *newFunctionDescriptor = new FunctionDescriptor(name);
+    m_functionDescriptors.push_back(newFunctionDescriptor);
+    return newFunctionDescriptor;
+}
 
-@end
+}

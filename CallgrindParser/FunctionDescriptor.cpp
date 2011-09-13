@@ -15,15 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#include "FunctionDescriptor.h"
 
-@interface FunctionDescriptor : NSObject {
-@private
-    void *_descriptor;
+#include <cassert>
+
+namespace CallgrindParser {
+
+FunctionDescriptor::FunctionDescriptor(const string &name)
+    : m_name(name)
+{
+    assert(m_name.size() > 0);
 }
 
-@property (nonatomic, readonly) NSString *name;
-
-- (id)initWithDescriptor:(void *)descriptor;
-
-@end
+}

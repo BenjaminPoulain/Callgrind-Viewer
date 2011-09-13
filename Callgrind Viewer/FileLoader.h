@@ -26,19 +26,11 @@ typedef void (^ErrorCallback)(NSError *);
 
 @interface FileLoader : NSObject {
 @private
-    __block Profile *_profile;
-    NSUInteger _positionOfInstructionCost;
-    NSMutableDictionary *_functionCompressedNames;
+    __block void *_parser;
 
     __block dispatch_io_t _ioChannel;
 
     NSMutableData *_pendingDataBuffer;
-    enum {
-        FormatVersion,
-        Creator,
-        Header,
-        Body,
-    } _readingStage;
 }
 
 - (id)initWithURL:(NSURL *)absoluteURL fileReadCallback:(SuccessCallback)successCallback errorCallback:(ErrorCallback)errorCallback;

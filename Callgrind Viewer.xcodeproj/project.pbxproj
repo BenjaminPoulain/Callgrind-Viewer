@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		268A56AF140FFC790066652C /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 268A56AE140FFC790066652C /* Profile.m */; };
+		26240553141D366D00F4CAD1 /* Parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 26240552141D366D00F4CAD1 /* Parser.h */; };
+		26240556141D366D00F4CAD1 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26240555141D366D00F4CAD1 /* Parser.cpp */; };
+		2624055C141D446C00F4CAD1 /* Profile.h in Headers */ = {isa = PBXBuildFile; fileRef = 2624055B141D446C00F4CAD1 /* Profile.h */; };
+		2624055E141D448400F4CAD1 /* Profile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2624055D141D448400F4CAD1 /* Profile.cpp */; };
+		26581190141EB7F600B681CA /* FunctionDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2658118F141EB7F600B681CA /* FunctionDescriptor.h */; };
+		26581193141EB80B00B681CA /* FunctionDescriptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26581192141EB80B00B681CA /* FunctionDescriptor.cpp */; };
+		266AEE82141D73F8007F0E8D /* CallgrindParser.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2624054C141D366D00F4CAD1 /* CallgrindParser.dylib */; };
+		268A56AF140FFC790066652C /* Profile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 268A56AE140FFC790066652C /* Profile.mm */; };
 		268DF3C5140D242000A961F2 /* CallgrindOutputWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */; };
-		268DF3C8140E78AC00A961F2 /* FileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C7140E78AA00A961F2 /* FileLoader.m */; };
+		268DF3C8140E78AC00A961F2 /* FileLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 268DF3C7140E78AA00A961F2 /* FileLoader.mm */; };
 		269063301415298B0095B866 /* ProfileTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690632F1415298B0095B866 /* ProfileTableViewDataSource.m */; };
 		26ACF3A5140684FB008653A5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26ACF3A4140684FB008653A5 /* Cocoa.framework */; };
 		26ACF3AF140684FB008653A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3AD140684FB008653A5 /* InfoPlist.strings */; };
@@ -18,16 +25,35 @@
 		26ACF3B8140684FB008653A5 /* CallgrindOutputDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ACF3B7140684FB008653A5 /* CallgrindOutputDocument.m */; };
 		26ACF3BB140684FB008653A5 /* CallgrindOutputWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3B9140684FB008653A5 /* CallgrindOutputWindow.xib */; };
 		26ACF3BE140684FB008653A5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3BC140684FB008653A5 /* MainMenu.xib */; };
-		26D1672C1412F86B00F6C199 /* FunctionDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D1672B1412F86B00F6C199 /* FunctionDescriptor.m */; };
+		26D1672C1412F86B00F6C199 /* FunctionDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 26D1672B1412F86B00F6C199 /* FunctionDescriptor.mm */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		26240561141D55C000F4CAD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26ACF397140684FA008653A5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2624054B141D366D00F4CAD1;
+			remoteInfo = CallgrindParser;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		2624054C141D366D00F4CAD1 /* CallgrindParser.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = CallgrindParser.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		26240550141D366D00F4CAD1 /* CallgrindParserProj.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CallgrindParserProj.xcconfig; sourceTree = "<group>"; };
+		26240551141D366D00F4CAD1 /* CallgrindParserTarget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CallgrindParserTarget.xcconfig; sourceTree = "<group>"; };
+		26240552141D366D00F4CAD1 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
+		26240555141D366D00F4CAD1 /* Parser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
+		2624055B141D446C00F4CAD1 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		2624055D141D448400F4CAD1 /* Profile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Profile.cpp; sourceTree = "<group>"; };
+		2658118F141EB7F600B681CA /* FunctionDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FunctionDescriptor.h; sourceTree = "<group>"; };
+		26581192141EB80B00B681CA /* FunctionDescriptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FunctionDescriptor.cpp; sourceTree = "<group>"; };
 		268A56AD140FFC790066652C /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
-		268A56AE140FFC790066652C /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
+		268A56AE140FFC790066652C /* Profile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Profile.mm; sourceTree = "<group>"; };
 		268DF3C3140D242000A961F2 /* CallgrindOutputWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallgrindOutputWindowController.h; sourceTree = "<group>"; };
 		268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallgrindOutputWindowController.m; sourceTree = "<group>"; };
 		268DF3C6140E78A900A961F2 /* FileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLoader.h; sourceTree = "<group>"; };
-		268DF3C7140E78AA00A961F2 /* FileLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLoader.m; sourceTree = "<group>"; };
+		268DF3C7140E78AA00A961F2 /* FileLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileLoader.mm; sourceTree = "<group>"; };
 		2690632E1415298B0095B866 /* ProfileTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewDataSource.h; sourceTree = "<group>"; };
 		2690632F1415298B0095B866 /* ProfileTableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewDataSource.m; sourceTree = "<group>"; };
 		26ACF3A0140684FB008653A5 /* Callgrind Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Callgrind Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,14 +71,22 @@
 		26ACF3BA140684FB008653A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CallgrindOutputWindow.xib; sourceTree = "<group>"; };
 		26ACF3BD140684FB008653A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		26D1672A1412F86B00F6C199 /* FunctionDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FunctionDescriptor.h; sourceTree = "<group>"; };
-		26D1672B1412F86B00F6C199 /* FunctionDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FunctionDescriptor.m; sourceTree = "<group>"; };
+		26D1672B1412F86B00F6C199 /* FunctionDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FunctionDescriptor.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		26240549141D366D00F4CAD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		26ACF39D140684FA008653A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				266AEE82141D73F8007F0E8D /* CallgrindParser.dylib in Frameworks */,
 				26ACF3A5140684FB008653A5 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,10 +94,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2624054D141D366D00F4CAD1 /* CallgrindParser */ = {
+			isa = PBXGroup;
+			children = (
+				26240550141D366D00F4CAD1 /* CallgrindParserProj.xcconfig */,
+				26240551141D366D00F4CAD1 /* CallgrindParserTarget.xcconfig */,
+				26240552141D366D00F4CAD1 /* Parser.h */,
+				26240555141D366D00F4CAD1 /* Parser.cpp */,
+				2624055B141D446C00F4CAD1 /* Profile.h */,
+				2624055D141D448400F4CAD1 /* Profile.cpp */,
+				2658118F141EB7F600B681CA /* FunctionDescriptor.h */,
+				26581192141EB80B00B681CA /* FunctionDescriptor.cpp */,
+			);
+			path = CallgrindParser;
+			sourceTree = "<group>";
+		};
 		26ACF395140684FA008653A5 = {
 			isa = PBXGroup;
 			children = (
 				26ACF3AA140684FB008653A5 /* Callgrind Viewer */,
+				2624054D141D366D00F4CAD1 /* CallgrindParser */,
 				26ACF3A3140684FB008653A5 /* Frameworks */,
 				26ACF3A1140684FB008653A5 /* Products */,
 			);
@@ -73,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				26ACF3A0140684FB008653A5 /* Callgrind Viewer.app */,
+				2624054C141D366D00F4CAD1 /* CallgrindParser.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,7 +157,7 @@
 				268DF3C4140D242000A961F2 /* CallgrindOutputWindowController.m */,
 				26ACF3B9140684FB008653A5 /* CallgrindOutputWindow.xib */,
 				268DF3C6140E78A900A961F2 /* FileLoader.h */,
-				268DF3C7140E78AA00A961F2 /* FileLoader.m */,
+				268DF3C7140E78AA00A961F2 /* FileLoader.mm */,
 				26ACF3BC140684FB008653A5 /* MainMenu.xib */,
 				26ACF3AB140684FB008653A5 /* Supporting Files */,
 			);
@@ -129,9 +180,9 @@
 			isa = PBXGroup;
 			children = (
 				268A56AD140FFC790066652C /* Profile.h */,
-				268A56AE140FFC790066652C /* Profile.m */,
+				268A56AE140FFC790066652C /* Profile.mm */,
 				26D1672A1412F86B00F6C199 /* FunctionDescriptor.h */,
-				26D1672B1412F86B00F6C199 /* FunctionDescriptor.m */,
+				26D1672B1412F86B00F6C199 /* FunctionDescriptor.mm */,
 				2690632E1415298B0095B866 /* ProfileTableViewDataSource.h */,
 				2690632F1415298B0095B866 /* ProfileTableViewDataSource.m */,
 			);
@@ -140,7 +191,37 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		2624054A141D366D00F4CAD1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26240553141D366D00F4CAD1 /* Parser.h in Headers */,
+				2624055C141D446C00F4CAD1 /* Profile.h in Headers */,
+				26581190141EB7F600B681CA /* FunctionDescriptor.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		2624054B141D366D00F4CAD1 /* CallgrindParser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26240559141D366D00F4CAD1 /* Build configuration list for PBXNativeTarget "CallgrindParser" */;
+			buildPhases = (
+				26240548141D366D00F4CAD1 /* Sources */,
+				26240549141D366D00F4CAD1 /* Frameworks */,
+				2624054A141D366D00F4CAD1 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CallgrindParser;
+			productName = CallgrindParser;
+			productReference = 2624054C141D366D00F4CAD1 /* CallgrindParser.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		26ACF39F140684FA008653A5 /* Callgrind Viewer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 26ACF3C1140684FB008653A5 /* Build configuration list for PBXNativeTarget "Callgrind Viewer" */;
@@ -152,6 +233,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				26240562141D55C000F4CAD1 /* PBXTargetDependency */,
 			);
 			name = "Callgrind Viewer";
 			productName = "Callgrind Viewer";
@@ -163,6 +245,9 @@
 /* Begin PBXProject section */
 		26ACF397140684FA008653A5 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = 26ACF39A140684FA008653A5 /* Build configuration list for PBXProject "Callgrind Viewer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -176,6 +261,7 @@
 			projectRoot = "";
 			targets = (
 				26ACF39F140684FA008653A5 /* Callgrind Viewer */,
+				2624054B141D366D00F4CAD1 /* CallgrindParser */,
 			);
 		};
 /* End PBXProject section */
@@ -195,6 +281,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		26240548141D366D00F4CAD1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26240556141D366D00F4CAD1 /* Parser.cpp in Sources */,
+				2624055E141D448400F4CAD1 /* Profile.cpp in Sources */,
+				26581193141EB80B00B681CA /* FunctionDescriptor.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		26ACF39C140684FA008653A5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -202,14 +298,22 @@
 				26ACF3B1140684FB008653A5 /* main.m in Sources */,
 				26ACF3B8140684FB008653A5 /* CallgrindOutputDocument.m in Sources */,
 				268DF3C5140D242000A961F2 /* CallgrindOutputWindowController.m in Sources */,
-				268DF3C8140E78AC00A961F2 /* FileLoader.m in Sources */,
-				268A56AF140FFC790066652C /* Profile.m in Sources */,
-				26D1672C1412F86B00F6C199 /* FunctionDescriptor.m in Sources */,
+				268DF3C8140E78AC00A961F2 /* FileLoader.mm in Sources */,
+				268A56AF140FFC790066652C /* Profile.mm in Sources */,
+				26D1672C1412F86B00F6C199 /* FunctionDescriptor.mm in Sources */,
 				269063301415298B0095B866 /* ProfileTableViewDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		26240562141D55C000F4CAD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2624054B141D366D00F4CAD1 /* CallgrindParser */;
+			targetProxy = 26240561141D55C000F4CAD1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		26ACF3AD140684FB008653A5 /* InfoPlist.strings */ = {
@@ -247,6 +351,26 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		26240557141D366D00F4CAD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				OTHER_CPLUSPLUSFLAGS = "-std=gnu++0x";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		26240558141D366D00F4CAD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				OTHER_CPLUSPLUSFLAGS = "-std=gnu++0x";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		26ACF3BF140684FB008653A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -299,6 +423,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Callgrind Viewer/Callgrind Viewer-Prefix.pch";
+				HEADER_SEARCH_PATHS = CallgrindParser;
 				INFOPLIST_FILE = "Callgrind Viewer/Callgrind Viewer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -310,6 +435,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Callgrind Viewer/Callgrind Viewer-Prefix.pch";
+				HEADER_SEARCH_PATHS = CallgrindParser;
 				INFOPLIST_FILE = "Callgrind Viewer/Callgrind Viewer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -319,6 +445,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		26240559141D366D00F4CAD1 /* Build configuration list for PBXNativeTarget "CallgrindParser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26240557141D366D00F4CAD1 /* Debug */,
+				26240558141D366D00F4CAD1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		26ACF39A140684FA008653A5 /* Build configuration list for PBXProject "Callgrind Viewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
