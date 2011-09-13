@@ -47,6 +47,7 @@ static inline NSArray *getFunctionsArray(Profile *profile)
     [_profile release];
     [_functions release];
     [_activeFilterString release];
+    [super dealloc];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView

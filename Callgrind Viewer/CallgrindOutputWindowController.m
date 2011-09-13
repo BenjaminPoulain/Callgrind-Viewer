@@ -34,6 +34,7 @@
 - (void)dealloc
 {
     [_profileTableViewDataSource release];
+    [super dealloc];
 }
 
 - (IBAction)filterFunctionsByName:(id)sender
