@@ -32,7 +32,6 @@ static inline CallgrindParser::Parser *getParser(void *variable)
 
 static inline ssize_t indexOfNextNewLineChar(const char* data, size_t offset, size_t size)
 {
-    // FIXME: this can be made faster reading whole words at a time.
     size_t i = offset;
     while (i < size) {
         if (data[i] == '\n')
