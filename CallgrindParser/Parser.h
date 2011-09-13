@@ -57,6 +57,9 @@ private:
     } m_readingStage;
 
     IdToNameMapping m_functionMapping;
+    IdToNameMapping m_objectMapping;
+
+    string m_objectContext;
 };
 
 }

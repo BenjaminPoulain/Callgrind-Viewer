@@ -120,7 +120,7 @@ bool Parser::processHeaderLine(const char *data, size_t size)
     return processBodyLine(data, size);
 }
 
-static inline size_t extractFunctionId(const char *data, size_t *currentIndex, size_t size, bool *success)
+static inline size_t extractIdPart(const char *data, size_t *currentIndex, size_t size, bool *success)
 {
     // Preconditions that must be ensured by the caller. This is a shortcut thanks to the condition (size >= 5)
     assert(size > *currentIndex);
@@ -160,7 +160,7 @@ static inline size_t extractFunctionId(const char *data, size_t *currentIndex, s
     return -1;
 }
 
-static inline string extractFunctionName(const char *data, size_t size, size_t currentIndex)
+static inline string extractNamePart(const char *data, size_t currentIndex, size_t size)
 {
     // First, skip whitespaces.
     while (currentIndex < size && data[currentIndex] == ' ')
@@ -175,35 +175,42 @@ static inline string extractFunctionName(const char *data, size_t size, size_t c
     return string();
 }
 
-static string processBodyLineFunctionSymbol(const char *data, size_t size, IdToNameMapping *functionMapping)
+static inline string extractName(const char *data, size_t offset, size_t size, IdToNameMapping *nameMapping)
 {
-    if (size < 5) // 5 = len("fn= n") || len("fn=()")
-        return string();
+    bool hasCompressedId = false;
+    size_t id = extractIdPart(data, &offset, size, &hasCompressedId);
+    string name = extractNamePart(data, offset, size);
 
-    if (!(data[0] == 'f' && data[1] == 'n' && data[2] == '='))
-        return string();
-
-    size_t functionStringStartIndex = 3;
-    bool functionHasCompressedId = false;
-    size_t functionId = extractFunctionId(data, &functionStringStartIndex, size, &functionHasCompressedId);
-    string functionName = extractFunctionName(data, size, functionStringStartIndex);
-
-    if (functionHasCompressedId) {
-        if (functionName.size())
-            (*functionMapping)[functionId] = functionName;
+    if (hasCompressedId) {
+        if (name.size())
+            (*nameMapping)[id] = name;
         else
-            functionName = (*functionMapping)[functionId];
+            name = (*nameMapping)[id];
     }
 
-    assert(!!functionName.size());
-    return functionName;
+    assert(name.size() > 0);
+    return name;
 }
 
-static inline string processBodyLineCalledFunctionSymbol(const char *data, size_t size, IdToNameMapping *functionMapping)
+template<char first, char second>
+static string processBodyLineTwoLetterSymbol(const char *data, size_t size, IdToNameMapping *mapping)
+{
+    if (size < 5) // 5 = len("xy= n") || len("xy=()")
+        return string();
+
+    if (!(data[0] == first && data[1] == second && data[2] == '='))
+        return string();
+
+    size_t startIndex = 3;
+    return extractName(data, startIndex, size, mapping);
+}
+
+template<char first, char second>
+static string processBodyLineTwoLetterCalledSymbol(const char *data, size_t size, IdToNameMapping *mapping)
 {
     assert(size >= 1);
     if (data[0] == 'c')
-        return processBodyLineFunctionSymbol(data + 1, size - 1, functionMapping);
+        return processBodyLineTwoLetterSymbol<first, second>(data + 1, size - 1, mapping);
     return string();
 }
 
@@ -212,12 +219,21 @@ bool Parser::processBodyLine(const char *data, size_t size)
     if (!size)
         return true;
 
-    string functionName = processBodyLineFunctionSymbol(data, size, &m_functionMapping);
+    string functionName = processBodyLineTwoLetterSymbol<'f', 'n'>(data, size, &m_functionMapping);
     if (functionName.size()) {
-        m_profile->addFunction(functionName);
+        m_profile->addFunction(functionName, m_objectContext);
         return true;
     }
-    processBodyLineCalledFunctionSymbol(data, size, &m_functionMapping);
+
+    string calledFunctionName = processBodyLineTwoLetterCalledSymbol<'f', 'n'>(data, size, &m_functionMapping);
+    if (calledFunctionName.size())
+        return true;
+
+    string object = processBodyLineTwoLetterSymbol<'o', 'b'>(data, size, &m_objectMapping);
+    if (object.size())
+        m_objectContext = object;
+
+    processBodyLineTwoLetterCalledSymbol<'o', 'b'>(data, size, &m_objectMapping);
     // FIXME: fully implement body parsing.
     return true;
 }

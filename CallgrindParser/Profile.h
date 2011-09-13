@@ -41,7 +41,7 @@ public:
     const string &command() const { return m_command; };
     void setCommand(const string &command) { m_command = command; }
 
-    FunctionDescriptor *addFunction(const string &name);
+    FunctionDescriptor *addFunction(const string &name, const string &object);
     size_t functionDescriptorCount() const { return m_functionDescriptors.size(); }
     FunctionDescriptor *functionDescriptorAt(size_t index) { assert(index < functionDescriptorCount()); return m_functionDescriptors.at(index); }
 

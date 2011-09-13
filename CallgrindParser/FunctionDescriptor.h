@@ -30,11 +30,13 @@ namespace CallgrindParser {
 class FunctionDescriptor
 {
 public:
-    FunctionDescriptor(const string &name);
+    FunctionDescriptor(const string &name, const string &object);
     const string &name() const { return m_name; }
+    const string &object() const { return m_object; }
 
 private:
     string m_name;
+    string m_object;
 };
 
 }

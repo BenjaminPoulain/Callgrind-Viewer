@@ -21,8 +21,9 @@
 
 namespace CallgrindParser {
 
-FunctionDescriptor::FunctionDescriptor(const string &name)
+FunctionDescriptor::FunctionDescriptor(const string &name, const string &object)
     : m_name(name)
+    , m_object(object)
 {
     assert(m_name.size() > 0);
 }

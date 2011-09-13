@@ -34,9 +34,9 @@ bool Profile::isValid() const
     return !!command().size();
 }
 
-FunctionDescriptor *Profile::addFunction(const string &name)
+FunctionDescriptor *Profile::addFunction(const string &name, const string &object)
 {
-    FunctionDescriptor *newFunctionDescriptor = new FunctionDescriptor(name);
+    FunctionDescriptor *newFunctionDescriptor = new FunctionDescriptor(name, object);
     m_functionDescriptors.push_back(newFunctionDescriptor);
     return newFunctionDescriptor;
 }
