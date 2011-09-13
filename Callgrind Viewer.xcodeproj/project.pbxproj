@@ -27,6 +27,7 @@
 		26ACF3BE140684FB008653A5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26ACF3BC140684FB008653A5 /* MainMenu.xib */; };
 		26D1672C1412F86B00F6C199 /* FunctionDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 26D1672B1412F86B00F6C199 /* FunctionDescriptor.mm */; };
 		26E717D0141FB73E0079B17F /* PathSimplifierFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E717CF141FB73E0079B17F /* PathSimplifierFormatter.m */; };
+		26E717D5141FBC140079B17F /* FunctionSymbolFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E717D4141FBC140079B17F /* FunctionSymbolFormatter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		26D1672B1412F86B00F6C199 /* FunctionDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FunctionDescriptor.mm; sourceTree = "<group>"; };
 		26E717CE141FB73E0079B17F /* PathSimplifierFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathSimplifierFormatter.h; sourceTree = "<group>"; };
 		26E717CF141FB73E0079B17F /* PathSimplifierFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PathSimplifierFormatter.m; sourceTree = "<group>"; };
+		26E717D3141FBC140079B17F /* FunctionSymbolFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FunctionSymbolFormatter.h; sourceTree = "<group>"; };
+		26E717D4141FBC140079B17F /* FunctionSymbolFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FunctionSymbolFormatter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +201,8 @@
 				26ACF3B9140684FB008653A5 /* CallgrindOutputWindow.xib */,
 				26E717CE141FB73E0079B17F /* PathSimplifierFormatter.h */,
 				26E717CF141FB73E0079B17F /* PathSimplifierFormatter.m */,
+				26E717D3141FBC140079B17F /* FunctionSymbolFormatter.h */,
+				26E717D4141FBC140079B17F /* FunctionSymbolFormatter.m */,
 			);
 			name = DocumentGUI;
 			sourceTree = "<group>";
@@ -316,6 +321,7 @@
 				26D1672C1412F86B00F6C199 /* FunctionDescriptor.mm in Sources */,
 				269063301415298B0095B866 /* ProfileTableViewDataSource.m in Sources */,
 				26E717D0141FB73E0079B17F /* PathSimplifierFormatter.m in Sources */,
+				26E717D5141FBC140079B17F /* FunctionSymbolFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
