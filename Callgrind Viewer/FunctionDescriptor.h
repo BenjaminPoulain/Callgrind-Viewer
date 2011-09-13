@@ -24,6 +24,7 @@
 
 @property (nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) NSString *object;
+@property (nonatomic, readonly) NSString *file;
 
 - (id)initWithDescriptor:(void *)descriptor;
 

@@ -57,4 +57,13 @@ static inline CallgrindParser::FunctionDescriptor *getFunctionDescriptor(void *v
                                      freeWhenDone:NO] autorelease];
 }
 
+- (NSString *)file
+{
+    CallgrindParser::FunctionDescriptor* functionDescriptor = getFunctionDescriptor(_descriptor);
+    const string &file = functionDescriptor->file();
+    return [[[NSString alloc] initWithBytesNoCopy:static_cast<void *>(const_cast<char *>(file.data()))
+                                           length:file.size()
+                                         encoding:NSUTF8StringEncoding
+                                     freeWhenDone:NO] autorelease];
+}
 @end

@@ -188,7 +188,6 @@ static inline string extractName(const char *data, size_t offset, size_t size, I
             name = (*nameMapping)[id];
     }
 
-    assert(name.size() > 0);
     return name;
 }
 
@@ -221,7 +220,7 @@ bool Parser::processBodyLine(const char *data, size_t size)
 
     string functionName = processBodyLineTwoLetterSymbol<'f', 'n'>(data, size, &m_functionMapping);
     if (functionName.size()) {
-        m_profile->addFunction(functionName, m_objectContext);
+        m_profile->addFunction(functionName, m_objectContext, m_fileContext);
         return true;
     }
 
@@ -234,6 +233,13 @@ bool Parser::processBodyLine(const char *data, size_t size)
         m_objectContext = object;
 
     processBodyLineTwoLetterCalledSymbol<'o', 'b'>(data, size, &m_objectMapping);
+    
+    string fileName = processBodyLineTwoLetterSymbol<'f', 'l'>(data, size, &m_fileMapping);
+    if (fileName.size())
+        m_fileContext = fileName;
+
+    processBodyLineTwoLetterCalledSymbol<'f', 'l'>(data, size, &m_fileMapping);
+
     // FIXME: fully implement body parsing.
     return true;
 }

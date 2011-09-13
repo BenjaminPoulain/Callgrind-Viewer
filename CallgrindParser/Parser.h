@@ -58,8 +58,10 @@ private:
 
     IdToNameMapping m_functionMapping;
     IdToNameMapping m_objectMapping;
+    IdToNameMapping m_fileMapping;
 
     string m_objectContext;
+    string m_fileContext;
 };
 
 }
